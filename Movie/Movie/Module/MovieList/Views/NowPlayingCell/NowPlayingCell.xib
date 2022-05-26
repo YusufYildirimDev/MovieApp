@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="NWF-oo-4zQ" customClass="NowPlayingCell" customModule="Movie" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="364" height="195"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="364" height="195"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eJd-Xp-M08">
+                        <rect key="frame" x="0.0" y="0.0" width="364" height="195"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="t2f-Ag-V0T">
+                                <rect key="frame" x="0.0" y="0.0" width="364" height="195"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AyX-sE-Yd2">
+                                        <rect key="frame" x="0.0" y="0.0" width="364" height="145"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="10M-MN-VXG" userLabel="Movie Title">
+                                        <rect key="frame" x="0.0" y="145" width="364" height="50"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="t2f-Ag-V0T" secondAttribute="bottom" id="7LJ-fi-lnl"/>
+                            <constraint firstItem="t2f-Ag-V0T" firstAttribute="top" secondItem="eJd-Xp-M08" secondAttribute="top" id="Irx-aF-xVh"/>
+                            <constraint firstAttribute="trailing" secondItem="t2f-Ag-V0T" secondAttribute="trailing" id="Iud-2W-J9J"/>
+                            <constraint firstItem="t2f-Ag-V0T" firstAttribute="leading" secondItem="eJd-Xp-M08" secondAttribute="leading" id="VNa-9R-hbP"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="Rkb-se-L30"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="eJd-Xp-M08" secondAttribute="trailing" id="5ZG-ut-bnh"/>
+                <constraint firstItem="eJd-Xp-M08" firstAttribute="leading" secondItem="NWF-oo-4zQ" secondAttribute="leading" id="Hd4-QU-w2S"/>
+                <constraint firstItem="eJd-Xp-M08" firstAttribute="top" secondItem="NWF-oo-4zQ" secondAttribute="top" id="Q3e-zR-n0h"/>
+                <constraint firstAttribute="bottom" secondItem="eJd-Xp-M08" secondAttribute="bottom" id="vaO-u0-Z1W"/>
+            </constraints>
+            <size key="customSize" width="364" height="195"/>
+            <connections>
+                <outlet property="imageView" destination="AyX-sE-Yd2" id="zFt-8q-Uh3"/>
+                <outlet property="movieTitle" destination="10M-MN-VXG" id="RBv-Rr-Xnr"/>
+            </connections>
+            <point key="canvasLocation" x="359.4202898550725" y="168.41517857142856"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

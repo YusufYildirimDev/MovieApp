@@ -1,0 +1,133 @@
+//  MovieDetailPresenter.swift
+//  Movie
+//  Created by Yusuf Muhammet Yıldırım on 5/4/22.
+
+import Foundation
+
+//MARK: - PROTOCOLS
+protocol MovieDetailPresenterProtocol: AnyObject {
+    func viewDidLoad(movie: Movie)
+    func similarMoviesCount() -> Int?
+    func getSimilarMovie(index: Int) -> Movie?
+    func gotoIMDB()
+    func didSelectRowAt(index: Int)
+    func toggleFavorite()
+    func setForceCancelFavorite()
+}
+
+//MARK: - CLASS
+final class MovieDetailPresenter {
+    unowned var view: MovieDetailViewControllerProtocol?
+    let router: MovieDetailRouterProtocol!
+    let interactor: MovieDetailInteractorProtocol!
+    private var similarMovies: [Movie] = []
+    private var favoriteStatus: Bool = false
+    var movieDetail: MovieDetailResponse? {
+        didSet {
+            guard let poster = movieDetail?.posterPath else { return }
+            view?.setMoviePoster(poster)
+        }
+    }
+
+    init(interactor: MovieDetailInteractorProtocol, router: MovieDetailRouterProtocol, view: MovieDetailViewControllerProtocol) {
+        self.view = view
+        self.interactor = interactor
+        self.router = router
+    }
+    
+    private func fetchSimilarMovies(id: Int) {
+        interactor.fetchSimilarMovies(id: id)
+    }
+    
+    private func fetchMovieDetail(id: Int) {
+        interactor.fetchMovieDetail(id: id)
+    }
+    
+    private func changeFavoriteStatus(_ status: Bool, _ id: Int) {
+        if status {
+            FavoriteMovies.instance.IDs.append(id)
+        } else {
+            if let index = FavoriteMovies.instance.IDs.firstIndex(where: {$0 == id}){
+                FavoriteMovies.instance.IDs.remove(at: index)
+            }
+        }
+    }
+    
+    private func getFavoriteStatus(_ id: Int) -> Bool {
+        return FavoriteMovies.instance.IDs.contains(id)
+    }
+}
+
+//MARK: - EXTENSIONS
+extension MovieDetailPresenter: MovieDetailPresenterProtocol {
+    func setForceCancelFavorite() {
+        favoriteStatus = false
+        view?.setFavoriteStatus(favoriteStatus)
+        changeFavoriteStatus(favoriteStatus, movieDetail?.id ?? 0)
+    }
+    
+    func toggleFavorite() {
+        if favoriteStatus {
+            view?.showAlert()
+        } else {
+            favoriteStatus.toggle()
+            view?.setFavoriteStatus(favoriteStatus)
+            changeFavoriteStatus(favoriteStatus, movieDetail?.id ?? 0)
+        }
+    }
+    
+    func didSelectRowAt(index: Int) {
+        router.navigate(.movieDetail(movie: similarMovies.getAt(at: index)))
+    }
+    
+    func gotoIMDB() {
+        guard let imdbId = movieDetail?.imdbId,
+              let url = URL(string: "https://www.imdb.com/title/\(imdbId)") else { return }
+        router.navigate(.openURL(url: url))
+    }
+    
+    func getSimilarMovie(index: Int) -> Movie? {
+        similarMovies.getAt(at: index)
+    }
+    
+    func similarMoviesCount() -> Int? {
+        similarMovies.count
+    }
+    
+    func viewDidLoad(movie: Movie) {
+        view?.setupCollectionView()
+        fetchMovieDetail(id: movie.id ?? 0)
+        fetchSimilarMovies(id: movie.id ?? 0)
+        favoriteStatus = getFavoriteStatus(movie.id ?? 0)
+        view?.setFavoriteStatus(favoriteStatus)
+        view?.setTitle(movie.originalTitle ?? "")
+        view?.setMovieTitle(movie.originalTitle ?? "")
+        view?.setMovieOverview(movie.overview ?? "")
+        view?.setRate(String(movie.voteAverage ?? 0))
+        view?.setReleaseDate(movie.releaseDate ?? "")
+    }
+}
+
+extension MovieDetailPresenter: MovieDetailInteractorOutputProtocol {
+    func fetchMovieDetailOutput(result: MovieDetailResult) {
+        switch result {
+            
+        case .success(let movieDetailResult):
+            movieDetail = movieDetailResult
+        case .failure(let error):
+            print("*****> fetchMovieDetailOutput error: \(error)")
+        }
+    }
+    
+    func fetchSimilarMoviesOutput(result: MovieSourceResult) {
+        switch result {
+            
+        case .success(let similarMoviesResult):
+            guard let results = similarMoviesResult.results else { return }
+            similarMovies = results
+            view?.reloadData()
+        case .failure(let error):
+            print("*****> fetchSimilarMoviesOutput error: \(error)")
+        }
+    }
+}
