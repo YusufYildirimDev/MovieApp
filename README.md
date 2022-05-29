@@ -7,3 +7,8 @@ MovieApp application is a mobile application built with Rest apiler derived from
 
 https://user-images.githubusercontent.com/83227022/170864809-5d883ae6-003f-48dd-8fea-3ee48f8ce8c7.mp4
 
+
+## Rozetler
+
+
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
